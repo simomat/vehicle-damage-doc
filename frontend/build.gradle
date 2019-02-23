@@ -1,0 +1,32 @@
+plugins {
+  id "com.moowork.node" version "1.2.0"
+}
+
+apply plugin: 'com.moowork.node'
+apply plugin: 'java'
+
+
+repositories {
+	mavenCentral()
+}
+
+
+task buildFrontend(type: NpmTask) {
+	dependsOn npmInstall
+  args = ['run', 'build']
+	outputs.dir 'dist'
+	// TODO inputs?!
+}
+
+
+task cleanFrontend(type: Delete) {
+  delete 'dist'
+}
+// TODO add clean dependency
+
+sourceSets {
+    main {
+				// output.resourcesDir =  'dist'
+        output.dir(buildFrontend.outputs, builtBy: buildFrontend)
+    }
+}

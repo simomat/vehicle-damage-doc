@@ -1,0 +1,10 @@
+.gradle
+
+**/build
+**/dist
+
+**/node_modules
+
+
+.idea/
+*.iml
