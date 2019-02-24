@@ -12,21 +12,22 @@ repositories {
 
 
 task buildFrontend(type: NpmTask) {
-	dependsOn npmInstall
-  args = ['run', 'build']
+    dependsOn npmInstall
+    args = ['run', 'build']
 	outputs.dir 'dist'
-	// TODO inputs?!
+    inputs.dir 'public'
+    inputs.dir 'src'
+    inputs.files 'babel.config', 'vue.config.js'
 }
-
 
 task cleanFrontend(type: Delete) {
   delete 'dist'
 }
-// TODO add clean dependency
+tasks.clean.dependsOn cleanFrontend
 
 sourceSets {
     main {
-				// output.resourcesDir =  'dist'
+        // handle compiled frontend as java classpath resources 
         output.dir(buildFrontend.outputs, builtBy: buildFrontend)
     }
 }
