@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <form>
+        <form v-on:submit.prevent="formSubmitted">
             <div class="form-group border-top">
                 <label for="erstzulassung">B: Datum der Erstzulassung des Fahrzeugs</label>
                 <div><input class="form-control" type="date" v-model="erstzulassung" id="erstzulassung"></div>
@@ -73,7 +73,7 @@
                 <label for="kraftstoff">P.3: Kraftstoffart oder Energiequelle</label>
                 <div>
                     <select class="form-control" v-model="kraftstoff" id="kraftstoff">
-                        <option v-for="(label, code) in kraftstoff_values" :value="code" :key="codes">{{ label }}</option>
+                        <option v-for="(label, code) in kraftstoff_values" :value="code" :key="code">{{ label }}</option>
                     </select>
                 </div>
             </div>
@@ -83,12 +83,14 @@
                 <div><input class="form-control" type="text" v-model="kraftstoff" id="kraftstoffcode" disabled></div>
             </div>
 
+            <button type="submit" class="btn btn-primary mb-2">Einsenden</button>
         </form>
     </div>
 </template>
 
 <script>
 
+import {AXIOS} from "../http-comons";
 
 export default {
     name: "Documentation",
@@ -148,6 +150,35 @@ export default {
             schadstoffklasse: '',
             emissionsklasse: '',
             kraftstoff: ''
+        }
+    },
+    methods: {
+        formSubmitted: function () {
+
+            console.log('POSTIIIING!')
+
+            AXIOS.post(
+                '/doku',
+                {
+                    erstzulassung: this.erstzulassung,
+                    fahrzeugklasse: this.fahrzeugklasse,
+                    identifizierungsnummer: this.identifizierungsnummer,
+                    marke: this.marke,
+                    typvarianteversion: {
+                        typ: this.typvarianteversion_typ,
+                        variante: this.typvarianteversion_variante,
+                        version: this.typvarianteversion_version
+                    },
+                    handelsbezeichnungen: this.handelsbezeichnungen,
+                    herstellerkurzbezeichnung: this.herstellerkurzbezeichnung,
+                    bezeichnungfahrzeugklasse: this.bezeichnungfahrzeugklasse,
+                    schadstoffklasse: this.schadstoffklasse,
+                    emissionsklasse: this.emissionsklasse,
+                    kraftstoff: this.kraftstoff
+
+                }
+            ).then(r => console.log("RESULT: \n" + JSON.stringify(r)))
+                .catch(e => console.log("ERROR: \n" + JSON.stringify(e)));
         }
     }
 }
