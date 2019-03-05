@@ -1,6 +1,7 @@
 .gradle
 
 **/build
+**/out
 **/dist
 
 **/node_modules
