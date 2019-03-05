@@ -158,7 +158,7 @@ export default {
             console.log('POSTIIIING!')
 
             AXIOS.post(
-                '/doku',
+                '/api/v1/doku',
                 {
                     erstzulassung: this.erstzulassung,
                     fahrzeugklasse: this.fahrzeugklasse,

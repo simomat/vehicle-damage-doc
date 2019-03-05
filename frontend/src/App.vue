@@ -1,17 +1,15 @@
 <template>
-  <div id="app">
+  <div id="app" class="container text-center">
     <img alt="Vue logo" src="./assets/logo.png">
-    <Documentation/>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Documentation from './components/Documentation.vue'
 
 export default {
   name: 'app',
   components: {
-    Documentation
   }
 }
 </script>

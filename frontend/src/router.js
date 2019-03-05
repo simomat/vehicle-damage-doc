@@ -1,0 +1,23 @@
+import Vue from 'vue'
+import Router from 'vue-router'
+import Login from '@/views/Login'
+import Documentation from '@/views/Documentation';
+
+Vue.use(Router)
+
+
+export default new Router({
+    routes: [
+        {
+            path: '/',
+            name: 'login',
+            component: Login
+        },
+        {
+            path: '/doku',
+            name: 'doku',
+            component: Documentation
+        }
+
+    ]
+});
