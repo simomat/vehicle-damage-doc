@@ -42,7 +42,7 @@ export default {
 
             this.error = false
 
-            this.$router.replace(this.$route.query.redirect || '/doku')
+            this.$router.replace(this.$route.query.redirect || '/list')
         },
         loginFailed() {
             this.error = 'Login failed!'
