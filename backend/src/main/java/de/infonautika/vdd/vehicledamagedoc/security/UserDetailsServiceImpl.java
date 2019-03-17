@@ -19,6 +19,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
 
-        return new User("admin", "passi", emptyList());
+        return new User("admin", "admin", emptyList());
     }
 }

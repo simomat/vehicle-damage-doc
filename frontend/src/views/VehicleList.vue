@@ -41,13 +41,15 @@
 </template>
 
 <script>
-import {getVehicles} from '../vehicles';
+
+import {AXIOS} from "../http-comons";
+
 
 export default {
     name: 'VehicleList',
     data: function () {
         return {
-            vehicles: getVehicles(),
+            vehicles: [],
             searchKey: ''
         };
     },
@@ -62,6 +64,11 @@ export default {
                 return vehicle.identifizierungsnummer.indexOf(self.searchKey) !== -1
             })
         }
+    },
+    created() {
+        AXIOS.get('/api/v1/vehicles')
+            .then(vehicles  => this.vehicles = vehicles)
+            .catch(e => console.log("ERROR: \n" + JSON.stringify(e)))
     }
 }
 </script>

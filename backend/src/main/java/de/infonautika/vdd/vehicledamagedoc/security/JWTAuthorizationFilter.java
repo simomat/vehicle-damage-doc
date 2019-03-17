@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static de.infonautika.vdd.vehicledamagedoc.security.SecurityConstants.*;
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
@@ -42,13 +43,13 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             authentication = getAuthentication(token);
         } catch (JWTVerificationException ex) {
             SecurityContextHolder.clearContext();
-            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
+            res.sendError(SC_UNAUTHORIZED, ex.getMessage());
             return;
         }
 
         if (authentication == null) {
             SecurityContextHolder.clearContext();
-            res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            res.sendError(SC_UNAUTHORIZED);
             return;
         }
 

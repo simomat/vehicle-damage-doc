@@ -11,7 +11,7 @@ import static org.springframework.http.HttpStatus.OK;
 public class DokuController {
 
 
-    @PostMapping(value = "/doku")
+    @PostMapping(value = "/vehicles")
     @ResponseStatus(OK)
     public void receiveDoku(@RequestBody Doku doku) {
         System.out.println(doku.toString());
