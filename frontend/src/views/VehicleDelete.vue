@@ -1,7 +1,7 @@
 <template>
     <section>
         <h2>Delete vehicle {{ vehicle.identifizierungsnummer }}</h2>
-        <form v-on:submit="delete_Vehicle">
+        <form v-on:submit="deleteVehicle">
             <p>The action cannot be undone.</p>
             <button type="submit" class="btn btn-danger">Delete</button>
             <router-link to="/list" class="btn btn-default">Cancel</router-link>
@@ -11,18 +11,26 @@
 
 <script>
 
-import {findVehicle, findVehicleKey, deleteVehicle} from "../vehicles";
+import {AXIOS} from "../http-comons"
 
 export default {
     name: 'VehicleDelete',
     data: function () {
-        return {vehicle: findVehicle(this.$route.params.fin)};
+        return {
+            vehicle: {}
+        };
     },
     methods: {
-        delete_Vehicle: function () {
-            deleteVehicle(findVehicleKey(this.$route.params.fin))
-            this.$router.push('/list');
+        deleteVehicle: function () {
+            AXIOS.delete(`/api/v1/vehicle/${this.$route.params.fin}`)
+                .then(() => this.$router.push('/list'))
+                .catch(e => console.log("ERROR: \n" + JSON.stringify(e)))
         }
+    },
+    created() {
+        AXIOS.get(`/api/v1/vehicle/${this.$route.params.fin}`)
+            .then(resp  => this.vehicle = resp.data)
+            .catch(e => console.log("ERROR: \n" + JSON.stringify(e)))
     }
 }
 </script>

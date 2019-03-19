@@ -14,14 +14,19 @@
 
 <script>
 
-import {findVehicle} from "../vehicles";
+import {AXIOS} from "../http-comons"
 
 export default {
     name: 'Vehicle',
     data: function () {
         return {
-            vehicle: findVehicle(this.$route.params.fin)
-        };
+            vehicle: {}
+        }
+    },
+    created() {
+        AXIOS.get(`/api/v1/vehicle/${this.$route.params.fin}`)
+            .then(resp => this.vehicle = resp.data)
+            .catch(e => console.log("ERROR: \n" + JSON.stringify(e)))
     }
 }
 

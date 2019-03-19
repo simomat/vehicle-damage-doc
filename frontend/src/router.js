@@ -2,10 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/views/Login'
 import VehicleList from '@/views/VehicleList';
-import VehicleEdit from "./views/VehicleEdit";
 import VehicleDelete from "./views/VehicleDelete";
 import Vehicle from "./views/Vehicle";
-import VehicleAdd from "./views/VehicleAdd";
+import VehicleAddEdit from "./views/VehicleAddEdit";
 
 Vue.use(Router)
 
@@ -28,19 +27,14 @@ export default new Router({
             component: Vehicle
         },
         {
-            path: '/edit/:fin',
-            name: 'vehicle-edit',
-            component: VehicleEdit
+            path: '/vehicle/:method/:fin',
+            name: 'vehicle-add-edit',
+            component: VehicleAddEdit
         },
         {
             path: '/vehicle/:fin/delete',
             name: 'vehicle-delete',
             component: VehicleDelete
-        },
-        {
-            path: '/addvehicle',
-            name: 'vehicle-add',
-            component: VehicleAdd
         }
     ]
 });

@@ -2,7 +2,7 @@ package de.infonautika.vdd.vehicledamagedoc.domain;
 
 import java.util.StringJoiner;
 
-public class Doku {
+public class Vehicle {
 
     private String erstzulassung;
     private String fahrzeugklasse;
@@ -60,9 +60,53 @@ public class Doku {
         this.kraftstoff = kraftstoff;
     }
 
+    public String getErstzulassung() {
+        return erstzulassung;
+    }
+
+    public String getFahrzeugklasse() {
+        return fahrzeugklasse;
+    }
+
+    public String getIdentifizierungsnummer() {
+        return identifizierungsnummer;
+    }
+
+    public String getMarke() {
+        return marke;
+    }
+
+    public Typvarianteversion getTypvarianteversion() {
+        return typvarianteversion;
+    }
+
+    public String getHandelsbezeichnungen() {
+        return handelsbezeichnungen;
+    }
+
+    public String getHerstellerkurzbezeichnung() {
+        return herstellerkurzbezeichnung;
+    }
+
+    public String getBezeichnungfahrzeugklasse() {
+        return bezeichnungfahrzeugklasse;
+    }
+
+    public String getSchadstoffklasse() {
+        return schadstoffklasse;
+    }
+
+    public String getEmissionsklasse() {
+        return emissionsklasse;
+    }
+
+    public String getKraftstoff() {
+        return kraftstoff;
+    }
+
     @Override
     public String toString() {
-        return new StringJoiner(", ", Doku.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", Vehicle.class.getSimpleName() + "[", "]")
                 .add("erstzulassung='" + erstzulassung + "'")
                 .add("fahrzeugklasse='" + fahrzeugklasse + "'")
                 .add("identifizierungsnummer='" + identifizierungsnummer + "'")

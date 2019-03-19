@@ -16,7 +16,7 @@ public class VehicleDamageDocApplicationTest {
 
     @BeforeEach
     public void setUp() {
-        mockMvc = forController(DokuController.class);
+        mockMvc = forController(VehicleController.class);
     }
 
     @Test

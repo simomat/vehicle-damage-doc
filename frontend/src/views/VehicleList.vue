@@ -1,7 +1,7 @@
 <template>
     <section>
         <div class="actions">
-            <router-link class="btn btn-default" :to="{path: '/addvehicle'}">
+            <router-link class="btn btn-default" :to="{name: 'vehicle-add-edit', params: {fin: undefined, method: 'add'}}">
                 <font-awesome-icon :icon="['far', 'plus-square']" />
                 Fahrzeug Hinzufügen
             </router-link>
@@ -31,7 +31,7 @@
                     {{ vehicle.typvarianteversion.typ }}
                 </td>
                 <td class="btn-group">
-                    <router-link class="btn btn-warning btn-sm" :to="{name: 'vehicle-edit', params: {fin: vehicle.identifizierungsnummer}}"><font-awesome-icon :icon="['far', 'edit']" /></router-link>
+                    <router-link class="btn btn-warning btn-sm" :to="{name: 'vehicle-add-edit', params: {fin: vehicle.identifizierungsnummer, method: 'edit'}}"><font-awesome-icon :icon="['far', 'edit']" /></router-link>
                     <router-link class="btn btn-danger btn-sm" :to="{name: 'vehicle-delete', params: {fin: vehicle.identifizierungsnummer}}"><font-awesome-icon :icon="['far', 'trash-alt']" /></router-link>
                 </td>
             </tr>
@@ -42,7 +42,7 @@
 
 <script>
 
-import {AXIOS} from "../http-comons";
+import {AXIOS} from "../http-comons"
 
 
 export default {
@@ -67,7 +67,7 @@ export default {
     },
     created() {
         AXIOS.get('/api/v1/vehicles')
-            .then(vehicles  => this.vehicles = vehicles)
+            .then(resp  => this.vehicles = resp.data)
             .catch(e => console.log("ERROR: \n" + JSON.stringify(e)))
     }
 }

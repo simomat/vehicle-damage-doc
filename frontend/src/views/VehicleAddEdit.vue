@@ -1,99 +1,103 @@
 <template>
-    <div class="container">
-        <form v-on:submit.prevent="formSubmitted">
-            <div class="form-group border-top">
+    <section class="text-left">
+        <h2 v-if="$route.params.method === 'add'">Fahrzeug Hinzufügen</h2>
+        <h2 v-if="$route.params.method === 'edit'">Fahrzeug Bearbeiten</h2>
+        <form v-on:submit.prevent="createOrSaveVehicle">
+
+
+            <div class="form-group border rounded p-3">
                 <label for="erstzulassung">B: Datum der Erstzulassung des Fahrzeugs</label>
-                <div><input class="form-control" type="date" v-model="erstzulassung" id="erstzulassung"></div>
+                <div><input class="form-control" type="date" v-model="vehicle.erstzulassung" id="erstzulassung"></div>
             </div>
 
-            <div class="form-group border-top">
+            <div class="form-group border rounded p-3">
                 <label class="form-text" for="fahrzeugklasse-options">J: Fahrzeugklasse</label>
                 <div class="form-check form-check-inline " id="fahrzeugklasse-options">
                     <div v-for="klasse in fahrzeugklassen_values" :key="klasse" class="ml-3 mr-3">
-                        <input class="form-check-input" type="radio" name="fahrzeugklasse" :value="klasse" v-model="fahrzeugklasse">
+                        <input class="form-check-input" type="radio" name="fahrzeugklasse" :value="klasse" v-model="vehicle.fahrzeugklasse">
                         <label class="form-check-label">{{ klasse }}</label>
                     </div>
                 </div>
             </div>
 
-            <div class="form-group border-top">
+            <div class="form-group border rounded p-3">
                 <label for="identifizierungsnummer">E: Fahrzeug-Identifizierungsnummer</label>
-                <div><input class="form-control" type="text" pattern="([A-HJ-NPR-Z1-9][A-HJ-NPR-Z\d][A-HJ-NPR-Z\d])([A-HJ-NPR-Z\d]{5})(\d)([A-HJ-NPR-Z\d]{8})" v-model="identifizierungsnummer" id="Identifizierungsnummer"></div>
+                <div><input class="form-control" type="text" pattern="([A-HJ-NPR-Z1-9][A-HJ-NPR-Z\d][A-HJ-NPR-Z\d])([A-HJ-NPR-Z\d]{5})(\d)([A-HJ-NPR-Z\d]{8})" v-model="vehicle.identifizierungsnummer" id="Identifizierungsnummer"></div>
             </div>
 
-            <div class="form-group border-top">
+
+            <div class="form-group border rounded p-3">
                 <label for="marke">D.1: Marke</label>
-                <div><input class="form-control" type="text" pattern=".{1,25}" v-model="marke" id="marke"></div>
+                <div><input class="form-control" type="text" pattern=".{1,25}" v-model="vehicle.marke" id="marke"></div>
             </div>
 
-            <div class="form-group border-top">
+
+            <div class="form-group border rounded p-3">
                 <label for="typvarianteversion">D.2: Typ/ Variante/ Version</label>
                 <div id="typvarianteversion">
-                    <input class="form-control" type="text" pattern=".{1,25}" v-model="typvarianteversion_typ">
-                    <input class="form-control" type="text" pattern=".{1,25}" v-model="typvarianteversion_variante">
-                    <input class="form-control" type="text" pattern=".{1,25}" v-model="typvarianteversion_version">
+                    <input class="form-control" type="text" pattern=".{1,25}" v-model="vehicle.typvarianteversion.typ">
+                    <input class="form-control" type="text" pattern=".{1,25}" v-model="vehicle.typvarianteversion.variante">
+                    <input class="form-control" type="text" pattern=".{1,25}" v-model="vehicle.typvarianteversion.version">
                 </div>
             </div>
 
-            <div class="form-group border-top">
+            <div class="form-group border rounded p-3">
                 <label for="handelsbezeichnungen">D.3: Handelsbezeichnungen</label>
-                <div><input class="form-control" type="text" pattern=".{1,25}" v-model="handelsbezeichnungen" id="handelsbezeichnungen"></div>
+                <div><input class="form-control" type="text" pattern=".{1,25}" v-model="vehicle.handelsbezeichnungen" id="handelsbezeichnungen"></div>
             </div>
 
-            <div class="form-group border-top">
+            <div class="form-group border rounded p-3">
                 <label for="herstellerkurzbezeichnung">2: Hersteller-Kurzbezeichnung</label>
-                <div><input class="form-control" type="text" pattern=".{1,25}" v-model="herstellerkurzbezeichnung" id="herstellerkurzbezeichnung"></div>
+                <div><input class="form-control" type="text" pattern=".{1,25}" v-model="vehicle.herstellerkurzbezeichnung" id="herstellerkurzbezeichnung"></div>
             </div>
 
-            <div class="form-group border-top">
+
+            <div class="form-group border rounded p-3">
                 <label for="bezeichnungfahrzeugklasse">5: Bezeichnung der Fahrzeugklasse und des Aufbaus</label>
-                <div><input class="form-control" type="text" pattern=".{1,25}" v-model="bezeichnungfahrzeugklasse" id="bezeichnungfahrzeugklasse"></div>
+                <div><input class="form-control" type="text" pattern=".{1,25}" v-model="vehicle.bezeichnungfahrzeugklasse" id="bezeichnungfahrzeugklasse"></div>
             </div>
 
-            <div class="form-group border-top">
+            <div class="form-group border rounded p-3">
                 <label for="schadstoffklasse">V.9 Für die EG-Typgenehmigung maßgebliche Schadstoffklasse</label>
-                <div><input class="form-control" type="text" pattern="\d{2}([A-Z][0A-LXYZ])?" v-model="schadstoffklasse" id="schadstoffklasse"></div>
+                <div><input class="form-control" type="text" pattern="\d{2}([A-Z][0A-LXYZ])?" v-model="vehicle.schadstoffklasse" id="schadstoffklasse"></div>
             </div>
 
-            <div class="form-group border-top">
+            <div class="form-group border rounded p-3">
                 <label for="emissionsklasse">14: Bezeichnung der nationalen Emissionsklasse</label>
                 <div>
-                    <select class="form-control" id="emissionsklasse" v-model="emissionsklasse">
-                        <option>EURO 1</option>
-                        <option>EURO 2</option>
-                        <option>EURO 3</option>
-                        <option>EURO 4</option>
-                        <option>EURO 5</option>
-                        <option>EURO 6</option>
+                    <select class="form-control" id="emissionsklasse" v-model="vehicle.emissionsklasse">
+                        <option v-for="label in emissionsklasse_values">{{ label }}</option>
                     </select>
                 </div>
             </div>
 
-            <div class="form-group border-top">
+            <div class="form-group border rounded p-3">
                 <label for="kraftstoff">P.3: Kraftstoffart oder Energiequelle</label>
                 <div>
-                    <select class="form-control" v-model="kraftstoff" id="kraftstoff">
+                    <select class="form-control" v-model="vehicle.kraftstoff" id="kraftstoff">
                         <option v-for="(label, code) in kraftstoff_values" :value="code" :key="code">{{ label }}</option>
                     </select>
                 </div>
             </div>
 
-            <div class="form-group border-top">
+            <div class="form-group border rounded p-3">
                 <label for="kraftstoffcode">10:	Code zu P.3</label>
-                <div><input class="form-control" type="text" v-model="kraftstoff" id="kraftstoffcode" disabled></div>
+                <div><input class="form-control" type="text" v-model="vehicle.kraftstoff" id="kraftstoffcode" disabled></div>
             </div>
 
-            <button type="submit" class="btn btn-primary mb-2">Einsenden</button>
+            <button v-if="$route.params.method === 'add'" type="submit" class="btn btn-primary">Create</button>
+            <button v-if="$route.params.method === 'edit'" type="submit" class="btn btn-primary">Save</button>
+            <router-link class="btn btn-default" :to="{name: 'list'}">Cancel</router-link>
         </form>
-    </div>
+    </section>
 </template>
 
 <script>
 
-import {AXIOS} from "../http-comons";
+import {AXIOS} from "../http-comons"
 
 export default {
-    name: "Documentation",
+    name: 'VehicleAdd',
     data: function () {
         return {
             fahrzeugklassen_values: [
@@ -137,53 +141,49 @@ export default {
                 '0035': 'Hybridantrieb mit Brennstoffzelle (Elektromotor) und Wasserstoff (Verbrennungsmotor) (Arbeitsverfahren NOVC-FCHV)',
                 '0036': 'Hybridantrieb mit Brennstoffzelle (Elektromotor) und Wasserstoff (Verbrennungsmotor) sowie extern aufladbarem elektrischen Speicher'
             },
-            erstzulassung: '',
-            fahrzeugklasse: '',
-            identifizierungsnummer: '',
-            marke: '',
-            typvarianteversion_typ: '',
-            typvarianteversion_variante: '',
-            typvarianteversion_version: '',
-            handelsbezeichnungen: '',
-            herstellerkurzbezeichnung: '',
-            bezeichnungfahrzeugklasse: '',
-            schadstoffklasse: '',
-            emissionsklasse: '',
-            kraftstoff: ''
+            emissionsklasse_values: ['EURO 1', 'EURO 2', 'EURO 3', 'EURO 4', 'EURO 5', 'EURO 6'],
+            vehicle: {
+                erstzulassung: '',
+                fahrzeugklasse: '',
+                identifizierungsnummer: '',
+                marke: '',
+                typvarianteversion: {
+                    typ: '',
+                    variante: '',
+                    version: ''
+                },
+                handelsbezeichnungen: '',
+                bezeichnungfahrzeugklasse: '',
+                schadstoffklasse: '',
+                emissionsklasse: '',
+                kraftstoff: ''
+            }
         }
     },
     methods: {
-        formSubmitted: function () {
+        createOrSaveVehicle: function() {
+            let method, url;
+            if (this.$route.params.method === 'add') {
+                method = 'post'
+                url = '/api/v1/vehicle'
+            } else if (this.$route.params.method === 'edit') {
+                method = 'put'
+                url = `/api/v1/vehicle/${this.$route.params.fin}`
+            } else {
+                throw 'unknown method'
+            }
 
-            console.log('POSTIIIING!')
+            let data = this.vehicle
 
-            AXIOS.post(
-                '/api/v1/doku',
-                {
-                    erstzulassung: this.erstzulassung,
-                    fahrzeugklasse: this.fahrzeugklasse,
-                    identifizierungsnummer: this.identifizierungsnummer,
-                    marke: this.marke,
-                    typvarianteversion: {
-                        typ: this.typvarianteversion_typ,
-                        variante: this.typvarianteversion_variante,
-                        version: this.typvarianteversion_version
-                    },
-                    handelsbezeichnungen: this.handelsbezeichnungen,
-                    herstellerkurzbezeichnung: this.herstellerkurzbezeichnung,
-                    bezeichnungfahrzeugklasse: this.bezeichnungfahrzeugklasse,
-                    schadstoffklasse: this.schadstoffklasse,
-                    emissionsklasse: this.emissionsklasse,
-                    kraftstoff: this.kraftstoff
-
-                }
-            ).then(r => console.log("RESULT: \n" + JSON.stringify(r)))
-                .catch(e => console.log("ERROR: \n" + JSON.stringify(e)));
+            AXIOS({method, url, data})
+                .then(() => this.$router.push('/list'))
+                .catch(e => console.log("ERROR: \n" + JSON.stringify(e)))
         }
+    },
+    created() {
+        AXIOS.get(`/api/v1/vehicle/${this.$route.params.fin}`)
+            .then(resp  => this.vehicle = resp.data)
+            .catch(e => console.log("ERROR: \n" + JSON.stringify(e)))
     }
 }
 </script>
-
-<style scoped>
-
-</style>

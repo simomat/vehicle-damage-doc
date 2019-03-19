@@ -20,6 +20,18 @@ public class Typvarianteversion {
         this.version = version;
     }
 
+    public String getTyp() {
+        return typ;
+    }
+
+    public String getVariante() {
+        return variante;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
     @Override
     public String toString() {
         return new StringJoiner(", ", Typvarianteversion.class.getSimpleName() + "[", "]")
