@@ -1,6 +1,5 @@
 <template>
     <section>
-        <div class="alert alert-danger" v-if="error">{{ error }}</div>
         <div class="actions">
             <router-link class="btn btn-default" :to="{name: 'vehicle-add-edit', params: {fin: 'unknown', method: 'add'}}">
                 <font-awesome-icon :icon="['far', 'plus-square']" />
@@ -23,7 +22,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="vehicle in filteredVehicles">
+            <tr v-for="vehicle in filteredVehicles" :key="vehicle.identifizierungsnummer">
                 <td>
                     <router-link :to="{name: 'vehicle', params: {fin: vehicle.identifizierungsnummer}}">{{ vehicle.identifizierungsnummer }}</router-link>
                 </td>
@@ -44,7 +43,7 @@
 <script>
 
 import {AXIOS} from "../http-comons"
-
+import {handleAxiosError} from "../error-handlers";
 
 export default {
     name: 'VehicleList',
@@ -52,23 +51,17 @@ export default {
         return {
             vehicles: [],
             searchKey: '',
-            error: '',
-
         };
     },
     methods: {
         updateVehicles: function() {
             AXIOS.get('/api/v1/vehicles')
-                .then(resp => {
-                    this.vehicles = resp.data;
-                })
-                .catch(error => {
-                    if (error.response && error.response.status == 403) {
-                        this.$emit('http-not-authorized', this.updateVehicles)
-                    } else {
-                        console.log(JSON.stringify(error))
-                    }
-                })
+                .then(resp => this.vehicles = resp.data)
+                .catch(error =>
+                    handleAxiosError(error, {
+                        notAuthorized: () => this.$emit('http-not-authorized', this.updateVehicles),
+                        printableError: message => this.$emit('printable-error', message)
+                    }))
         }
     },
     computed: {

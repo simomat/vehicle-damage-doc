@@ -16,6 +16,7 @@
 <script>
 
 import {AXIOS} from "../http-comons"
+import {handleAxiosError} from "../error-handlers";
 
 export default {
     name: 'Vehicle',
@@ -28,7 +29,11 @@ export default {
     created() {
         AXIOS.get(`/api/v1/vehicle/${this.$route.params.fin}`)
             .then(resp => this.vehicle = resp.data)
-            .catch(e => this.error = JSON.stringify(e))
+            .catch(error =>
+                handleAxiosError(error, {
+                    notAuthorized: () => this.$emit('http-not-authorized', this.updateVehicles),
+                    printableError: message => this.$emit('printable-error', message)
+                }))
     }
 }
 

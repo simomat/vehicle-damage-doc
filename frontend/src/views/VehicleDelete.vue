@@ -12,6 +12,7 @@
 <script>
 
 import {AXIOS} from "../http-comons"
+import {handleAxiosError} from "../error-handlers";
 
 export default {
     name: 'VehicleDelete',
@@ -24,13 +25,21 @@ export default {
         deleteVehicle: function () {
             AXIOS.delete(`/api/v1/vehicle/${this.$route.params.fin}`)
                 .then(() => this.$router.push('/list'))
-                .catch(e => console.log("ERROR: \n" + JSON.stringify(e)))
+                .catch(error =>
+                    handleAxiosError(error, {
+                        notAuthorized: () => this.$emit('http-not-authorized', this.updateVehicles),
+                        printableError: message => this.$emit('printable-error', message)
+                    }))
         }
     },
     created() {
         AXIOS.get(`/api/v1/vehicle/${this.$route.params.fin}`)
             .then(resp  => this.vehicle = resp.data)
-            .catch(e => console.log("ERROR: \n" + JSON.stringify(e)))
+            .catch(error =>
+                handleAxiosError(error, {
+                    notAuthorized: () => this.$emit('http-not-authorized', this.updateVehicles),
+                    printableError: message => this.$emit('printable-error', message)
+                }))
     }
 }
 </script>

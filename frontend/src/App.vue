@@ -2,16 +2,22 @@
   <div id="app" class="container text-center">
     <img alt="Vue logo" src="./assets/logo.png">
     <modal-login v-if="showLoginForm" v-on:login-successful="onLoginSuccessful"></modal-login>
-    <router-view v-on:http-not-authorized="onHttpNotAuthorized"></router-view>
+    <div class="alert alert-danger" v-if="error">{{ error }}</div>
+    <router-view
+            v-on:http-not-authorized="onHttpNotAuthorized"
+            v-on:printable-error="onPrintableError"></router-view>
   </div>
 </template>
 
 <script>
 
+import {tryRestoreAuthToken} from "./http-comons";
+
 export default {
   name: 'app',
   data() {
     return {
+      error: '',
       showLoginForm: false,
       loginSuccessfulHandler: null
     }
@@ -24,9 +30,16 @@ export default {
       }
     },
     onHttpNotAuthorized: function (handler) {
+
       this.loginSuccessfulHandler = handler
       this.showLoginForm = true
+    },
+    onPrintableError: function (message) {
+      this.error = message
     }
+  },
+  beforeCreate() {
+      tryRestoreAuthToken()
   },
   components: {
   }

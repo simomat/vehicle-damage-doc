@@ -26,7 +26,7 @@
 
 <script>
 
-    import {AXIOS, tryInstallAuthToken} from "../http-comons";
+import {AXIOS, tryInstallAuthToken, logout} from "../http-comons";
 
 export default {
     name: 'Login',
@@ -56,8 +56,7 @@ export default {
         },
         loginFailed() {
             this.error = 'Login failed!'
-            // TODO put in api or somewhere
-            delete localStorage.loginToken
+            logout()
         }
     }
 }
