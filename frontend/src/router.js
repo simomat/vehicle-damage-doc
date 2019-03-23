@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '@/views/Login'
 import VehicleList from '@/views/VehicleList';
 import VehicleDelete from "./views/VehicleDelete";
 import Vehicle from "./views/Vehicle";
@@ -14,7 +13,7 @@ export default new Router({
         {
             path: '/',
             name: 'login',
-            component: Login
+            component: VehicleList
         },
         {
             path: '/list',

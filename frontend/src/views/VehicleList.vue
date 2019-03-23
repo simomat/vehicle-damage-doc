@@ -1,7 +1,8 @@
 <template>
     <section>
+        <div class="alert alert-danger" v-if="error">{{ error }}</div>
         <div class="actions">
-            <router-link class="btn btn-default" :to="{name: 'vehicle-add-edit', params: {fin: undefined, method: 'add'}}">
+            <router-link class="btn btn-default" :to="{name: 'vehicle-add-edit', params: {fin: 'unknown', method: 'add'}}">
                 <font-awesome-icon :icon="['far', 'plus-square']" />
                 Fahrzeug Hinzufügen
             </router-link>
@@ -50,8 +51,25 @@ export default {
     data: function () {
         return {
             vehicles: [],
-            searchKey: ''
+            searchKey: '',
+            error: '',
+
         };
+    },
+    methods: {
+        updateVehicles: function() {
+            AXIOS.get('/api/v1/vehicles')
+                .then(resp => {
+                    this.vehicles = resp.data;
+                })
+                .catch(error => {
+                    if (error.response && error.response.status == 403) {
+                        this.$emit('http-not-authorized', this.updateVehicles)
+                    } else {
+                        console.log(JSON.stringify(error))
+                    }
+                })
+        }
     },
     computed: {
         filteredVehicles: function () {
@@ -66,9 +84,7 @@ export default {
         }
     },
     created() {
-        AXIOS.get('/api/v1/vehicles')
-            .then(resp  => this.vehicles = resp.data)
-            .catch(e => console.log("ERROR: \n" + JSON.stringify(e)))
+        this.updateVehicles()
     }
 }
 </script>

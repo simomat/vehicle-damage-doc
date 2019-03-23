@@ -1,7 +1,8 @@
 <template>
   <div id="app" class="container text-center">
     <img alt="Vue logo" src="./assets/logo.png">
-    <router-view></router-view>
+    <modal-login v-if="showLoginForm" v-on:login-successful="onLoginSuccessful"></modal-login>
+    <router-view v-on:http-not-authorized="onHttpNotAuthorized"></router-view>
   </div>
 </template>
 
@@ -9,6 +10,24 @@
 
 export default {
   name: 'app',
+  data() {
+    return {
+      showLoginForm: false,
+      loginSuccessfulHandler: null
+    }
+  },
+  methods: {
+    onLoginSuccessful: function () {
+      this.showLoginForm = false
+      if (this.loginSuccessfulHandler) {
+        this.loginSuccessfulHandler()
+      }
+    },
+    onHttpNotAuthorized: function (handler) {
+      this.loginSuccessfulHandler = handler
+      this.showLoginForm = true
+    }
+  },
   components: {
   }
 }

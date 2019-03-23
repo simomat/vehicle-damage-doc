@@ -1,5 +1,6 @@
 <template>
     <section>
+        <div class="alert alert-danger" v-if="error">{{ error }}</div>
         Fahrzeug-Identifizierungsnummer:
         <h2>{{ vehicle.identifizierungsnummer }}</h2>
         <b>Marke:</b>
@@ -20,13 +21,14 @@ export default {
     name: 'Vehicle',
     data: function () {
         return {
-            vehicle: {}
+            vehicle: {},
+            error: ''
         }
     },
     created() {
         AXIOS.get(`/api/v1/vehicle/${this.$route.params.fin}`)
             .then(resp => this.vehicle = resp.data)
-            .catch(e => console.log("ERROR: \n" + JSON.stringify(e)))
+            .catch(e => this.error = JSON.stringify(e))
     }
 }
 

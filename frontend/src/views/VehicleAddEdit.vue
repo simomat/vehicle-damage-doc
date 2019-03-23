@@ -4,14 +4,18 @@
         <h2 v-if="$route.params.method === 'edit'">Fahrzeug Bearbeiten</h2>
         <form v-on:submit.prevent="createOrSaveVehicle">
 
+            <div class="form-group border rounded p-3">
+                <label for="identifizierungsnummer">Fahrzeug-Identifizierungsnummer</label>
+                <div><input class="form-control" type="text" pattern="([A-HJ-NPR-Z1-9][A-HJ-NPR-Z\d][A-HJ-NPR-Z\d])([A-HJ-NPR-Z\d]{5})(\d)([A-HJ-NPR-Z\d]{8})" v-model="vehicle.identifizierungsnummer" id="Identifizierungsnummer" :disabled="$route.params.method === 'edit'"></div>
+            </div>
 
             <div class="form-group border rounded p-3">
-                <label for="erstzulassung">B: Datum der Erstzulassung des Fahrzeugs</label>
+                <label for="erstzulassung">Datum der Erstzulassung des Fahrzeugs</label>
                 <div><input class="form-control" type="date" v-model="vehicle.erstzulassung" id="erstzulassung"></div>
             </div>
 
             <div class="form-group border rounded p-3">
-                <label class="form-text" for="fahrzeugklasse-options">J: Fahrzeugklasse</label>
+                <label class="form-text" for="fahrzeugklasse-options">Fahrzeugklasse</label>
                 <div class="form-check form-check-inline " id="fahrzeugklasse-options">
                     <div v-for="klasse in fahrzeugklassen_values" :key="klasse" class="ml-3 mr-3">
                         <input class="form-check-input" type="radio" name="fahrzeugklasse" :value="klasse" v-model="vehicle.fahrzeugklasse">
@@ -21,19 +25,13 @@
             </div>
 
             <div class="form-group border rounded p-3">
-                <label for="identifizierungsnummer">E: Fahrzeug-Identifizierungsnummer</label>
-                <div><input class="form-control" type="text" pattern="([A-HJ-NPR-Z1-9][A-HJ-NPR-Z\d][A-HJ-NPR-Z\d])([A-HJ-NPR-Z\d]{5})(\d)([A-HJ-NPR-Z\d]{8})" v-model="vehicle.identifizierungsnummer" id="Identifizierungsnummer"></div>
-            </div>
-
-
-            <div class="form-group border rounded p-3">
-                <label for="marke">D.1: Marke</label>
+                <label for="marke">Marke</label>
                 <div><input class="form-control" type="text" pattern=".{1,25}" v-model="vehicle.marke" id="marke"></div>
             </div>
 
 
             <div class="form-group border rounded p-3">
-                <label for="typvarianteversion">D.2: Typ/ Variante/ Version</label>
+                <label for="typvarianteversion">Typ/ Variante/ Version</label>
                 <div id="typvarianteversion">
                     <input class="form-control" type="text" pattern=".{1,25}" v-model="vehicle.typvarianteversion.typ">
                     <input class="form-control" type="text" pattern=".{1,25}" v-model="vehicle.typvarianteversion.variante">
@@ -42,28 +40,28 @@
             </div>
 
             <div class="form-group border rounded p-3">
-                <label for="handelsbezeichnungen">D.3: Handelsbezeichnungen</label>
+                <label for="handelsbezeichnungen">Handelsbezeichnungen</label>
                 <div><input class="form-control" type="text" pattern=".{1,25}" v-model="vehicle.handelsbezeichnungen" id="handelsbezeichnungen"></div>
             </div>
 
             <div class="form-group border rounded p-3">
-                <label for="herstellerkurzbezeichnung">2: Hersteller-Kurzbezeichnung</label>
+                <label for="herstellerkurzbezeichnung">Hersteller-Kurzbezeichnung</label>
                 <div><input class="form-control" type="text" pattern=".{1,25}" v-model="vehicle.herstellerkurzbezeichnung" id="herstellerkurzbezeichnung"></div>
             </div>
 
 
             <div class="form-group border rounded p-3">
-                <label for="bezeichnungfahrzeugklasse">5: Bezeichnung der Fahrzeugklasse und des Aufbaus</label>
+                <label for="bezeichnungfahrzeugklasse">Bezeichnung der Fahrzeugklasse und des Aufbaus</label>
                 <div><input class="form-control" type="text" pattern=".{1,25}" v-model="vehicle.bezeichnungfahrzeugklasse" id="bezeichnungfahrzeugklasse"></div>
             </div>
 
             <div class="form-group border rounded p-3">
-                <label for="schadstoffklasse">V.9 Für die EG-Typgenehmigung maßgebliche Schadstoffklasse</label>
+                <label for="schadstoffklasse">Für die EG-Typgenehmigung maßgebliche Schadstoffklasse</label>
                 <div><input class="form-control" type="text" pattern="\d{2}([A-Z][0A-LXYZ])?" v-model="vehicle.schadstoffklasse" id="schadstoffklasse"></div>
             </div>
 
             <div class="form-group border rounded p-3">
-                <label for="emissionsklasse">14: Bezeichnung der nationalen Emissionsklasse</label>
+                <label for="emissionsklasse">Bezeichnung der nationalen Emissionsklasse</label>
                 <div>
                     <select class="form-control" id="emissionsklasse" v-model="vehicle.emissionsklasse">
                         <option v-for="label in emissionsklasse_values">{{ label }}</option>
@@ -72,7 +70,7 @@
             </div>
 
             <div class="form-group border rounded p-3">
-                <label for="kraftstoff">P.3: Kraftstoffart oder Energiequelle</label>
+                <label for="kraftstoff">Kraftstoffart oder Energiequelle</label>
                 <div>
                     <select class="form-control" v-model="vehicle.kraftstoff" id="kraftstoff">
                         <option v-for="(label, code) in kraftstoff_values" :value="code" :key="code">{{ label }}</option>
@@ -81,7 +79,7 @@
             </div>
 
             <div class="form-group border rounded p-3">
-                <label for="kraftstoffcode">10:	Code zu P.3</label>
+                <label for="kraftstoffcode">Code zur Kraftstoffart oder Energiequelle</label>
                 <div><input class="form-control" type="text" v-model="vehicle.kraftstoff" id="kraftstoffcode" disabled></div>
             </div>
 
@@ -181,9 +179,11 @@ export default {
         }
     },
     created() {
-        AXIOS.get(`/api/v1/vehicle/${this.$route.params.fin}`)
-            .then(resp  => this.vehicle = resp.data)
-            .catch(e => console.log("ERROR: \n" + JSON.stringify(e)))
+        if (this.$route.params.method === 'edit') {
+            AXIOS.get(`/api/v1/vehicle/${this.$route.params.fin}`)
+                .then(resp  => this.vehicle = resp.data)
+                .catch(e => console.log("ERROR: \n" + JSON.stringify(e)));
+        }
     }
 }
 </script>
