@@ -161,20 +161,19 @@ export default {
     },
     methods: {
         createOrSaveVehicle: function() {
-            let method, url;
+            let method = undefined
             if (this.$route.params.method === 'add') {
                 method = 'post'
-                url = '/api/v1/vehicle'
             } else if (this.$route.params.method === 'edit') {
                 method = 'put'
-                url = `/api/v1/vehicle/${this.$route.params.fin}`
             } else {
                 throw 'unknown method'
             }
 
-            let data = this.vehicle
-
-            AXIOS({method, url, data})
+            AXIOS({
+                method: method,
+                url: '/api/v1/vehicle',
+                data: this.vehicle})
                 .then(() => this.$router.push('/list'))
                 .catch(error =>
                     handleAxiosError(error, {

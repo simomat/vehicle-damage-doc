@@ -1,11 +1,17 @@
 package de.infonautika.vdd.vehicledamagedoc.controller;
 
 import de.infonautika.vdd.vehicledamagedoc.domain.Vehicle;
+import de.infonautika.vdd.vehicledamagedoc.persistence.VehicleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import javax.validation.Valid;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.springframework.http.HttpStatus.OK;
 
@@ -16,40 +22,45 @@ public class VehicleController {
     private Map<String, Vehicle> vehicles = new HashMap<>();
 
 
+    @Autowired
+    private VehicleRepository vehicleRepository;
+
+
     @PostMapping(value = "/vehicle")
-    @ResponseStatus(OK)
-    public void receiveVehicle(@RequestBody Vehicle vehicle) {
-        vehicles.put(vehicle.getIdentifizierungsnummer(), vehicle);
+    public ResponseEntity receiveVehicle(@RequestBody Vehicle vehicle) {
+        if (vehicleRepository.existsById(vehicle.getIdentifizierungsnummer())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+        vehicleRepository.save(vehicle);
+        return ResponseEntity.ok().build();
     }
 
-    @PutMapping(value = "/vehicle/{fin}")
-    public ResponseEntity updateVehicle(@RequestBody Vehicle vehicle, @PathVariable String fin) {
-        if (vehicles.computeIfPresent(fin, (k, old) -> vehicle) == null) {
+    @PutMapping(value = "/vehicle/")
+    public ResponseEntity updateVehicle(@Valid @RequestBody Vehicle vehicle) {
+        if (!vehicleRepository.existsById(vehicle.getIdentifizierungsnummer())) {
             return ResponseEntity.notFound().build();
         }
+        vehicleRepository.save(vehicle);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping(value = "/vehicles")
     public Collection<Vehicle> getVehicles() {
-        return vehicles.values();
+        return vehicleRepository.findAll();
     }
 
     @DeleteMapping(value = "/vehicle/{fin}")
-    public ResponseEntity deleteVehicle(@PathVariable String fin) {
-        if (vehicles.remove(fin) == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok().build();
+    @ResponseStatus(OK)
+    public void deleteVehicle(@PathVariable String fin) {
+        vehicleRepository.deleteById(fin);
     }
 
     @GetMapping(value = "/vehicle/{fin}")
-    public ResponseEntity getVehicle(@PathVariable String fin) {
-        Vehicle vehicle = vehicles.get(fin);
-        if (vehicle == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(vehicle);
+    public ResponseEntity getVehicle(@Valid @PathVariable String fin) {
+        return vehicleRepository.findById(fin)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+
     }
 
 }

@@ -1,11 +1,14 @@
 package de.infonautika.vdd.vehicledamagedoc.domain;
 
-import java.util.StringJoiner;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document
 public class Vehicle {
 
     private String erstzulassung;
     private String fahrzeugklasse;
+    @Id
     private String identifizierungsnummer;
     private String marke;
     private Typvarianteversion typvarianteversion;
@@ -106,18 +109,18 @@ public class Vehicle {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", Vehicle.class.getSimpleName() + "[", "]")
-                .add("erstzulassung='" + erstzulassung + "'")
-                .add("fahrzeugklasse='" + fahrzeugklasse + "'")
-                .add("identifizierungsnummer='" + identifizierungsnummer + "'")
-                .add("marke='" + marke + "'")
-                .add("typvarianteversion=" + typvarianteversion)
-                .add("handelsbezeichnungen='" + handelsbezeichnungen + "'")
-                .add("herstellerkurzbezeichnung='" + herstellerkurzbezeichnung + "'")
-                .add("bezeichnungfahrzeugklasse='" + bezeichnungfahrzeugklasse + "'")
-                .add("schadstoffklasse='" + schadstoffklasse + "'")
-                .add("emissionsklasse='" + emissionsklasse + "'")
-                .add("kraftstoff='" + kraftstoff + "'")
-                .toString();
+        return "Vehicle{" +
+                "erstzulassung='" + erstzulassung + '\'' +
+                ", fahrzeugklasse='" + fahrzeugklasse + '\'' +
+                ", identifizierungsnummer='" + identifizierungsnummer + '\'' +
+                ", marke='" + marke + '\'' +
+                ", typvarianteversion=" + typvarianteversion +
+                ", handelsbezeichnungen='" + handelsbezeichnungen + '\'' +
+                ", herstellerkurzbezeichnung='" + herstellerkurzbezeichnung + '\'' +
+                ", bezeichnungfahrzeugklasse='" + bezeichnungfahrzeugklasse + '\'' +
+                ", schadstoffklasse='" + schadstoffklasse + '\'' +
+                ", emissionsklasse='" + emissionsklasse + '\'' +
+                ", kraftstoff='" + kraftstoff + '\'' +
+                '}';
     }
 }
